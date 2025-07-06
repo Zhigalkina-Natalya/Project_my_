@@ -1,4 +1,4 @@
-from isort.core import process
+from typing import Union
 
 from src.widget import get_date
 
@@ -17,7 +17,7 @@ def filter_by_state(list_of_dict: list[dict], state: str = "EXECUTED") -> list[d
     return new_list
 
 
-def sort_by_date(list_of_dict: list[dict], sorting: bool = True) -> list[dict]:
+def sort_by_date(list_of_dict: list[dict], sorting: bool = True) -> Union[list[dict], str]:
     """
     Функция возвращает новый список словарей, отсортированный по дате
     """
@@ -31,12 +31,15 @@ def sort_by_date(list_of_dict: list[dict], sorting: bool = True) -> list[dict]:
             raise KeyError(f"Словарь №{idx} не содержит ключа 'date'")
 
         try:
-            dt = get_date(transaction['date'])
+            dt = get_date(transaction["date"])
             processed.append((dt, transaction))
         except ValueError as e:
             raise ValueError(f"Ошибка в словаре №{idx}: {str(e)}")
 
+    # Сортируем по dt объектам
     processed.sort(key=lambda x: x[0], reverse=sorting)
+    # Возвращаем только исходные словари (без dt объектов)
     list_interval = [i[1] for i in processed]
+    # Сортируем по датам исходные словари
     list_sorted = sorted(list_interval, key=lambda x: x["date"], reverse=sorting)
     return list_sorted

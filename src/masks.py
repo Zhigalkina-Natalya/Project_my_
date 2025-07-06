@@ -1,6 +1,3 @@
-from string import digits
-
-
 def get_mask_card_number(number_card: str) -> str:
     """
     Возвращает маску номера карты, в формате где видны только
