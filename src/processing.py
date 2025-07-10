@@ -1,3 +1,8 @@
+from typing import Union
+
+from src.widget import get_date
+
+
 def filter_by_state(list_of_dict: list[dict], state: str = "EXECUTED") -> list[dict]:
     """
     Функция возвращает новый список словарей, содержащий словари, у которых ключ state
@@ -12,9 +17,29 @@ def filter_by_state(list_of_dict: list[dict], state: str = "EXECUTED") -> list[d
     return new_list
 
 
-def sort_by_date(list_of_dict: list[dict], sorting: bool = True) -> list[dict]:
+def sort_by_date(list_of_dict: list[dict], sorting: bool = True) -> Union[list[dict], str]:
     """
     Функция возвращает новый список словарей, отсортированный по дате
     """
-    sorted_list = sorted(list_of_dict, key=lambda x: x["date"], reverse=sorting)
-    return sorted_list
+    if not isinstance(list_of_dict, list):
+        raise TypeError("Ожидается список словарей")
+
+    # Проверяем наличие ключа date
+    processed = []
+    for idx, transaction in enumerate(list_of_dict):
+        if "date" not in transaction:
+            raise KeyError(f"Словарь №{idx} не содержит ключа 'date'")
+
+        try:
+            dt = get_date(transaction["date"])
+            processed.append((dt, transaction))
+        except ValueError as e:
+            raise ValueError(f"Ошибка в словаре №{idx}: {str(e)}")
+
+    # Сортируем по dt объектам
+    processed.sort(key=lambda x: x[0], reverse=sorting)
+    # Возвращаем только исходные словари (без dt объектов)
+    list_interval = [i[1] for i in processed]
+    # Сортируем по датам исходные словари
+    list_sorted = sorted(list_interval, key=lambda x: x["date"], reverse=sorting)
+    return list_sorted
