@@ -29,7 +29,8 @@ git clone https://github.com/Zhigalkina-Natalya/Project_my_
  masks.py       | Две функции: *get_mask_card_number*, *get_mask_account*                   
  processing.py  | Две функции: *filter_by_state*, *sort_by_date*                            
  widget.py      | Две функции: *mask_account_card*, *get_date*                              
- generators.py  | *filter_by_currency*, *transaction_descriptions*, *card_number_generator* 
+ generators.py  | *filter_by_currency*, *transaction_descriptions*, *card_number_generator*
+ decorator.py   | Декораторы: *log*
 
 ## Пример работы функций:
 
@@ -173,6 +174,16 @@ transactions = [список словарей с транзакциями - Ан
     0000 0000 0000 0004
     0000 0000 0000 0005
 ```
+### *log*
+```
+Декоратор, который автоматически логирует начало и конец выполнения функции,а также ее результаты или возникшие ошибки. 
+Декоратор принимает необязательный аргумент filename, который определяет, куда будут записываться логи (в файл или в консоль): 
+Если filename задан, логи записываются в указанный файл.
+Если filename не задан, логи выводятся в консоль.
+Логирование включает:
+Имя функции и результат выполнения при успешной операции.
+Имя функции, тип возникшей ошибки и входные параметры, если выполнение функции привело к ошибке.
+```
 
 ## Инструкция по запуску тестирования
 
@@ -184,6 +195,7 @@ transactions = [список словарей с транзакциями - Ан
 
 1. `@pytest.fixture`
 2. `@pytest.mark.parametrize`
+3.  Фикстура `capsys` для проверки вывода данных в консоль
 
 ## Инструкция по инструменту оценки качества тестирования.
 
