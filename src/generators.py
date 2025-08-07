@@ -13,7 +13,7 @@ def filter_by_currency(transactions: list[dict], currency: str) -> Iterable:
             yield transaction
 
 
-# usd_transactions = list(filter_by_currency(transactions, "USD"))
+# usd_transactions = filter_by_currency(transactions, "USD")
 # for transactions in range(2):
 #     print(next(usd_transactions))
 
