@@ -31,6 +31,8 @@ git clone https://github.com/Zhigalkina-Natalya/Project_my_
  widget.py      | Две функции: *mask_account_card*, *get_date*                              
  generators.py  | *filter_by_currency*, *transaction_descriptions*, *card_number_generator*
  decorator.py   | Декораторы: *log*
+ external.py    | *get_transaction_amount_in_rub*
+ utils.py       | *load_transactions*
 
 ## Пример работы функций:
 
@@ -185,6 +187,19 @@ transactions = [список словарей с транзакциями - Ан
 Имя функции, тип возникшей ошибки и входные параметры, если выполнение функции привело к ошибке.
 ```
 
+### *get_transaction_amount_in_rub*
+```
+Функция, принимающая на вход транзакцию и возвращающая сумму транзакции (amount) в рублях, тип данных — float.
+Если транзакция была в USD или EUR, происходит обращение к внешнему API для получения текущего курса валют и конвертации
+суммы операции в рубли. Для конвертации валюты воспользуйтесь Exchange Rates Data API:
+https://apilayer.com/exchangerates_data-api.
+```
+### *load_transactions*
+```
+Функция, принимающая на вход путь до JSON-файла и возвращает список словарей с данными о финансовых транзакциях.
+Если файл пустой, содержит не список или не найден, функция возвращает пустой список
+```
+
 ## Инструкция по запуску тестирования
 
 1. Установите зависимости через Poetry с добавлением в отдельную группу: `poetry add --group dev pytest`
@@ -196,6 +211,7 @@ transactions = [список словарей с транзакциями - Ан
 1. `@pytest.fixture`
 2. `@pytest.mark.parametrize`
 3.  Фикстура `capsys` для проверки вывода данных в консоль
+4.  Инструменты/заглушки — `Mock`  и  `patch`
 
 ## Инструкция по инструменту оценки качества тестирования.
 
