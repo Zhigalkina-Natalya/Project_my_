@@ -52,6 +52,7 @@ def log(filename: Optional[str] = None) -> Callable[[Callable[..., T]], Callable
 
     return decorator
 
+
 # @log(filename="mylog.txt")
 # def divide(a, b):
 #     """Делит a на b"""
