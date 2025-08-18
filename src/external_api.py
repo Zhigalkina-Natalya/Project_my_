@@ -21,11 +21,14 @@ def get_transaction_amount_in_rub(transaction: dict) -> float:
     Принимает транзакции и возвращает (amount) в рублях. Если транзакция в USD, EUR,
     то происходит обращение к внешнему API для получения текущего курса валют и конвертации суммы операции в рубли
     """
-    amount = transaction.get("amount")
-    # вариант, если валюта есть, но значение None
-    currency = str(transaction.get("currency") or "RUB").strip().upper()
+    amount = transaction.get("operationAmount", {}).get("amount")
+    currency = transaction.get("operationAmount", {}).get("currency", {}).get("code")
     if amount is None:
         raise ValueError("В транзакции отсутствует 'amount'")
+    if not currency:
+        raise ValueError("В транзакции отсутствует 'currency'")
+
+    currency = str(currency).strip().upper()
     if currency == "RUB":
         return float(amount)
     if currency not in ["USD", "EUR"]:
@@ -44,18 +47,3 @@ def get_transaction_amount_in_rub(transaction: dict) -> float:
     if "result" not in data:
         raise ValueError("Некорректный ответ API: отсутствует поле 'result'")
     return float(data.get("result"))
-
-
-# if __name__ == "__main__":
-#    # Получаем статус-код из ответа и выводим его на экран
-#    status_code = response.status_code
-#    print(f"Статус код: {status_code}")
-#    # Пример использования
-#    transactions = [
-#        {"amount": 50, "currency": "USD"},
-#        {"amount": 100, "currency": "EUR"},
-#        {"amount": 5000, "currency": "RUB"}
-#    ]
-
-#    for t in transactions:
-#        print(f"{t['amount']} {t['currency']} = {get_transaction_amount_in_rub(t)} RUB")

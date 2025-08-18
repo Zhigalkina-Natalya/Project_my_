@@ -7,7 +7,7 @@ from src.external_api import get_transaction_amount_in_rub
 
 def test_get_transaction_amount_in_rub() -> None:
     """Тест если валюта USD, то вызываем API и конвертируем"""
-    transaction = {"amount": 100, "currency": "USD"}
+    transaction = {"operationAmount": {"amount": 100, "currency": {"code": "USD"}}}
     fake_response = Mock()
     fake_response.status_code = 200
     fake_response.json.return_value = {"result": 5000.0}
@@ -21,21 +21,21 @@ def test_get_transaction_amount_in_rub() -> None:
 
 def test_transaction_in_rub() -> None:
     """Тест если валюта RUB, то возврат суммы без обращения к API"""
-    transaction = {"amount": 1000, "currency": "RUB"}
+    transaction = {"operationAmount": {"amount": 1000, "currency": {"code": "RUB"}}}
     result = get_transaction_amount_in_rub(transaction)
     assert result == 1000.0
 
 
 def test_transaction_without_amount() -> None:
     """Тест если отсутствует поле amount"""
-    transaction = {"currency": "USD"}
+    transaction = {"operationAmount": {"currency": {"code": "USD"}}}
     with pytest.raises(ValueError, match="В транзакции отсутствует 'amount'"):
         get_transaction_amount_in_rub(transaction)
 
 
 def test_api_invalid_json() -> None:
     """API вернул JSON без поля result"""
-    transaction = {"amount": 100, "currency": "USD"}
+    transaction = {"operationAmount": {"amount": 100, "currency": {"code": "USD"}}}
     fake_response = Mock()
     fake_response.status_code = 200
     fake_response.json.return_value = {}
@@ -47,14 +47,14 @@ def test_api_invalid_json() -> None:
 
 def test_transaction_with_unsupported_currency() -> None:
     """Если валюта не RUB/USD/EUR"""
-    transaction = {"amount": 10, "currency": "GBP"}
+    transaction = {"operationAmount": {"amount": 10, "currency": {"code": "GBP"}}}
     with pytest.raises(ValueError, match="Конвертация валюты GBP не поддерживается"):
         get_transaction_amount_in_rub(transaction)
 
 
 def test_api_error_response() -> None:
     """Если API вернул ошибку (например 401)"""
-    transaction = {"amount": 100, "currency": "USD"}
+    transaction = {"operationAmount": {"amount": 100, "currency": {"code": "USD"}}}
 
     fake_response = Mock()
     fake_response.status_code = 401
