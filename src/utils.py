@@ -1,6 +1,6 @@
 import json
-import os
 import logging
+import os
 from typing import Any, Dict, List
 
 logger = logging.getLogger("utils")
@@ -52,6 +52,7 @@ def load_transactions(file_path: str) -> List[Dict[str, Any]]:
     except json.JSONDecodeError as err:
         logger.error(f"Ошибка при чтении JSON: {err}")
         return []
+
 
 # if __name__ == "__main__":
 # # Автоматически определяем путь до operations.json в папке data

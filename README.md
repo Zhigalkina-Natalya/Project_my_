@@ -33,6 +33,8 @@ git clone https://github.com/Zhigalkina-Natalya/Project_my_
  decorator.py   | Декораторы: *log*
  external.py    | *get_transaction_amount_in_rub*
  utils.py       | *load_transactions*
+ external_api.py| *get_transaction_amount_in_rub*
+ reader.py      | Две функции: *read_transactions_csv*, *read_transactions_xlsx*
 
 ## Пример работы функций:
 
@@ -198,6 +200,24 @@ https://apilayer.com/exchangerates_data-api.
 ```
 Функция, принимающая на вход путь до JSON-файла и возвращает список словарей с данными о финансовых транзакциях.
 Если файл пустой, содержит не список или не найден, функция возвращает пустой список
+```
+
+### *get_transaction_amount_in_rub*
+```
+Функция, которая принимает на вход транзакцию и возвращает сумму транзакции (amount) в рублях, тип данных — float.
+Если транзакция была в USD или EUR, происходит обращение к внешнему API для получения текущего курса валют и 
+конвертации суммы операции в рубли. Для конвертации валюты воспользуйтесь Exchange Rates Data API:
+ https://apilayer.com/exchangerates_data-api.
+```
+
+### *read_transactions_csv*
+```
+Функция считывает информацию из CSV-файлов
+```
+
+### *read_transactions_xlsx*
+```
+Функция считывает информацию из XLSX-файлов
 ```
 
 ## Инструкция по запуску тестирования
