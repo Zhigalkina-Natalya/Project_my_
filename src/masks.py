@@ -58,6 +58,7 @@ def get_mask_account(number_account: str) -> str:
     logger.debug("Передана пустая строка для маскировки счета")
     return ""
 
+
 # if __name__ == '__main__':
 #     get_mask_card_number("1111-2222-3333-4444")
 #     get_mask_card_number("")
