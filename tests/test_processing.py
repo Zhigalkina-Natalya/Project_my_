@@ -1,6 +1,6 @@
 import pytest
 
-from src.processing import filter_by_state, sort_by_date
+from src.processing import filter_by_state, process_bank_operations, process_bank_search, sort_by_date
 
 
 def test_filter_state_default(list_of_dict: list[dict]) -> list[dict]:
@@ -93,3 +93,63 @@ def test_sort_by_date_invalid() -> None:
     """Тест на неправильный формат даты"""
     with pytest.raises(IndexError):
         sort_by_date([{"id": 594226727, "state": "CANCELED", "date": "12.03.2018"}])
+
+
+def test_process_bank_search_found(transactions: list[dict]) -> None:
+    """
+    Тест проверяет, что функция находит все транзакции,
+    где в поле description есть слово "перевод" (без учета регистра)
+    """
+    result = process_bank_search(transactions, "перевод")
+    assert len(result) == 5  # все транзакции содержат слово "Перевод" в description
+    assert all("перевод" in r["description"].lower() for r in result)
+
+
+def test_process_bank_search_case_insensitive(transactions: list[dict]) -> None:
+    """
+    Тест проверяет, что поиск не находит транзакции, если ключевое слово отсутствует
+    (например, "ВКЛАД" в данных фикстуры).
+    """
+    result = process_bank_search(transactions, "ВКЛАД")
+    assert result == []
+
+
+def test_process_bank_search_invalid_data() -> None:
+    """
+    Тест проверяет, что при передаче некорректных типов данных
+    (строка вместо списка или число вместо ключа) выбрасывается TypeError.
+    """
+    with pytest.raises(TypeError):
+        process_bank_search("not a list", "test")
+
+    with pytest.raises(TypeError):
+        process_bank_search([{"description": "Перевод"}], 123)
+
+
+def test_process_bank_operations_counts(transactions: list[dict]) -> None:
+    """
+    Тест проверяет, что функция корректно подсчитывает количество
+    транзакций по категориям на основе фикстуры transactions.
+    """
+    categories = ["Перевод организации", "Перевод со счета на счет", "Снятие наличных"]
+    result = process_bank_operations(transactions, categories)
+
+    assert result["Перевод организации"] == 2
+    assert result["Перевод со счета на счет"] == 2
+    assert result["Снятие наличных"] == 0
+
+
+def test_process_bank_operations_invalid_data() -> None:
+    """
+    Тест проверяет, что при передаче некорректных данных
+    (строка вместо списка транзакций, строка вместо списка категорий,
+    числа вместо категорий) выбрасывается TypeError.
+    """
+    with pytest.raises(TypeError):
+        process_bank_operations("not a list", ["cat"])
+
+    with pytest.raises(TypeError):
+        process_bank_operations([], "not a list")
+
+    with pytest.raises(TypeError):
+        process_bank_operations([{"description": "Тест"}], [123])
