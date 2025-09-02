@@ -27,7 +27,7 @@ git clone https://github.com/Zhigalkina-Natalya/Project_my_
  Название файла | Содержание файла                                                          
 ----------------|---------------------------------------------------------------------------
  masks.py       | Две функции: *get_mask_card_number*, *get_mask_account*                   
- processing.py  | Две функции: *filter_by_state*, *sort_by_date*                            
+ processing.py  | Четыре функции: *filter_by_state*, *sort_by_date*, *process_bank_searche*, *process_bank_operations*
  widget.py      | Две функции: *mask_account_card*, *get_date*                              
  generators.py  | *filter_by_currency*, *transaction_descriptions*, *card_number_generator*
  decorator.py   | Декораторы: *log*
@@ -35,6 +35,7 @@ git clone https://github.com/Zhigalkina-Natalya/Project_my_
  utils.py       | *load_transactions*
  external_api.py| *get_transaction_amount_in_rub*
  reader.py      | Две функции: *read_transactions_csv*, *read_transactions_xlsx*
+ main.py        | *main*
 
 ## Пример работы функций:
 
@@ -84,6 +85,21 @@ git clone https://github.com/Zhigalkina-Natalya/Project_my_
  {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'},
  {'id': 594226727, 'state': 'CANCELED', 'date': '2018-09-12T21:27:25.241689'},
  {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'}]
+```
+
+### *process_bank_searche*
+
+```
+Функция, принимающая список словарей с данными о банковских операциях и строку поиска,
+возвращает список словарей, которые содержат строку поиска.
+```
+
+### *process_bank_operations*
+
+```
+Функция, которая принимает список словарей с данными о банковских операциях и список категорий операций,
+а возвращаeт словарь, в котором ключи — это названия категорий, а значения — это количество операций в каждой
+категории. Категории операций хранятся в поле description
 ```
 
 ### *mask_account_card*
