@@ -15,9 +15,9 @@ def read_transactions_xlsx(file_path: str) -> List[Dict]:
     return df.to_dict(orient="records")
 
 
-if __name__ == "__main__":
-    transactions = read_transactions_csv("data/transactions.csv")
-    print(transactions[:3])
-
-    transactions_1 = read_transactions_xlsx("data/transactions_excel.xlsx")
-    print(transactions_1[:3])
+# if __name__ == "__main__":
+#     transactions = read_transactions_csv("data/transactions.csv")
+#     print(transactions[:3])
+#
+#     transactions_1 = read_transactions_xlsx("data/transactions_excel.xlsx")
+#     print(transactions_1[:3])

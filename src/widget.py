@@ -5,8 +5,12 @@ def mask_account_card(type_number: str) -> str:
     """
     Возвращает информацию о картах или счете с замаскированными номерами
     """
-    if type_number == "":
+    if not type_number or str(type_number).lower() == "nan":
         return ""
+
+    # Приводим к строке
+    type_number = str(type_number)
+
     digits_type = "".join(filter(str.isdigit, type_number))
     if "счет" in type_number.lower():
         if len(digits_type) != 20:
